@@ -48,6 +48,17 @@ QString LibinputDevice::sysName() const
     return libinput_device_get_sysname(m_device);
 }
 
+QSizeF LibinputDevice::size() const
+{
+    double width;
+    double height;
+    if (libinput_device_get_size(m_device, &width, &height)) {
+        return {};
+    }
+
+    return {width, height};
+}
+
 std::unique_ptr<UdevDevice> LibinputDevice::udevDevice() const
 {
     return std::make_unique<UdevDevice>(libinput_device_get_udev_device(m_device));

@@ -20,6 +20,7 @@
 #include "LibinputGestureEvent.h"
 #include "LibinputKeyboardEvent.h"
 #include "LibinputPointerEvent.h"
+#include "LibinputTouchEvent.h"
 
 namespace InputActions
 {
@@ -67,6 +68,16 @@ std::optional<LibinputPointerEvent> LibinputEvent::pointerEvent() const
     }
 
     return LibinputPointerEvent(event);
+}
+
+std::optional<LibinputTouchEvent> LibinputEvent::touchEvent() const
+{
+    auto *event = libinput_event_get_touch_event(m_event);
+    if (!event) {
+        return {};
+    }
+
+    return LibinputTouchEvent(event);
 }
 
 }

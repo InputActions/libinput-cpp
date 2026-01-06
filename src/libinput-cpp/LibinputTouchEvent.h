@@ -18,54 +18,32 @@
 
 #pragma once
 
-#include <QSizeF>
-#include <QString>
-#include <QtClassHelperMacros>
+#include <cstdint>
+#include <QPointF>
 
-struct libinput_device;
+struct libinput_event_touch;
 
 namespace InputActions
 {
 
-class UdevDevice;
-
-class LibinputDevice
+class LibinputTouchEvent
 {
 public:
-    LibinputDevice(libinput_device *device);
-    ~LibinputDevice();
-
-    Q_DISABLE_COPY_MOVE(LibinputDevice);
-
-    libinput_device *raw() { return m_device; }
+    LibinputTouchEvent(libinput_event_touch *event);
 
     /**
-     * @see libinput_device_get_name
+     * @see libinput_event_touch_get_slot
      */
-    QString name() const;
-    /**
-     * @see libinput_device_get_sysname
-     */
-    QString sysName() const;
+    int32_t slot() const;
 
     /**
-     * @see libinput_device_get_size
+     * @see libinput_event_touch_get_x
+     * @see libinput_event_touch_get_y
      */
-    QSizeF size() const;
-
-    /**
-     * @see libinput_device_get_udev_device
-     */
-    std::unique_ptr<UdevDevice> udevDevice() const;
-
-    /**
-     * @param value true - LIBINPUT_CONFIG_TAP_ENABLED, false - LIBINPUT_CONFIG_TAP_DISABLED
-     * @see libinput_device_config_tap_set_enabled
-     */
-    void configTapSetEnabled(bool value);
+    QPointF position() const;
 
 private:
-    libinput_device *m_device;
+    libinput_event_touch *m_event;
 };
 
 }

@@ -28,6 +28,7 @@ namespace InputActions
 class LibinputGestureEvent;
 class LibinputKeyboardEvent;
 class LibinputPointerEvent;
+class LibinputTouchEvent;
 
 class LibinputEvent
 {
@@ -54,6 +55,11 @@ public:
      * @see libinput_event_get_pointer_event
      */
     std::optional<LibinputPointerEvent> pointerEvent() const;
+    /**
+     * @return The touch event or std::nullopt if this event is not a touch event. The returned object becomes invalid when its parent is deleted.
+     * @see libinput_event_get_touch_event
+     */
+    std::optional<LibinputTouchEvent> touchEvent() const;
 
 private:
     libinput_event *m_event;

@@ -9,6 +9,7 @@ add_library(libinput-cpp STATIC
     libinput-cpp/LibinputKeyboardEvent.cpp
     libinput-cpp/LibinputPathContext.cpp
     libinput-cpp/LibinputPointerEvent.cpp
+    libinput-cpp/LibinputTouchEvent.cpp
     libinput-cpp/UdevDevice.cpp
 )
 target_link_libraries(libinput-cpp  PUBLIC
