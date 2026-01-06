@@ -52,8 +52,9 @@ int LibinputPathContext::fd() const
     return libinput_get_fd(m_libinput);
 }
 
-LibinputDevice *LibinputPathContext::addDevice(const QString &path)
+LibinputDevice *LibinputPathContext::addDevice(const QString &path, bool grab)
 {
+    m_grab = grab;
     auto *libinputDevice = libinput_path_add_device(m_libinput, path.toStdString().c_str());
     if (!libinputDevice) {
         return {};
@@ -87,11 +88,6 @@ std::unique_ptr<LibinputEvent> LibinputPathContext::getEvent()
     }
 
     return std::make_unique<LibinputEvent>(event);
-}
-
-void LibinputPathContext::setGrab(bool value)
-{
-    m_grab = value;
 }
 
 int LibinputPathContext::openRestricted(const char *path, int flags, void *data)

@@ -54,7 +54,7 @@ public:
     /**
      * @see libinput_path_add_device
      */
-    LibinputDevice *addDevice(const QString &path);
+    LibinputDevice *addDevice(const QString &path, bool grab = false);
     void removeDevice(LibinputDevice *device);
 
     /**
@@ -65,11 +65,6 @@ public:
      * @see libinput_get_event
      */
     std::unique_ptr<LibinputEvent> getEvent();
-
-    /**
-     * @param value Grab opened devices.
-     */
-    void setGrab(bool value);
 
 signals:
     void eventsAvailable();
