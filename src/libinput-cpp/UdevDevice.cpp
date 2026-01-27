@@ -18,6 +18,7 @@
 
 #include "UdevDevice.h"
 #include <libudev.h>
+#include <utility>
 
 namespace InputActions
 {
