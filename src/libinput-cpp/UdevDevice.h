@@ -29,14 +29,17 @@ class UdevDevice
 {
 public:
     UdevDevice(udev_device *device);
+    UdevDevice(UdevDevice &&);
     ~UdevDevice();
 
-    Q_DISABLE_COPY_MOVE(UdevDevice);
+    const char *propertyValue(const char *key) const;
 
-    const char *propertyValue(const char *key);
+    UdevDevice &operator=(UdevDevice &&);
 
 private:
-    udev_device *m_device;
+    Q_DISABLE_COPY(UdevDevice);
+
+    udev_device *m_device{};
 };
 
 }

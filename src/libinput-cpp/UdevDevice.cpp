@@ -29,12 +29,22 @@ UdevDevice::UdevDevice(udev_device *device)
 
 UdevDevice::~UdevDevice()
 {
+    if (!m_device) {
+        return;
+    }
+
     udev_device_unref(m_device);
 }
 
-const char *UdevDevice::propertyValue(const char *key)
+const char *UdevDevice::propertyValue(const char *key) const
 {
     return udev_device_get_property_value(m_device, key);
+}
+
+UdevDevice &UdevDevice::operator=(UdevDevice &&other)
+{
+    std::swap(m_device, other.m_device);
+    return *this;
 }
 
 }

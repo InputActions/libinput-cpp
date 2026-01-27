@@ -34,9 +34,8 @@ class LibinputEvent
 {
 public:
     LibinputEvent(libinput_event *event);
+    LibinputEvent(LibinputEvent &&);
     ~LibinputEvent();
-
-    Q_DISABLE_COPY_MOVE(LibinputEvent);
 
     libinput_event_type type() const;
 
@@ -61,8 +60,12 @@ public:
      */
     std::optional<LibinputTouchEvent> touchEvent() const;
 
+    LibinputEvent &operator=(LibinputEvent &&);
+
 private:
-    libinput_event *m_event;
+    Q_DISABLE_COPY(LibinputEvent);
+
+    libinput_event *m_event{};
 };
 
 }

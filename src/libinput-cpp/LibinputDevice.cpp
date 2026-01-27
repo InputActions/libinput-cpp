@@ -59,9 +59,9 @@ QSizeF LibinputDevice::size() const
     return {width, height};
 }
 
-std::unique_ptr<UdevDevice> LibinputDevice::udevDevice() const
+UdevDevice LibinputDevice::udevDevice() const
 {
-    return std::make_unique<UdevDevice>(libinput_device_get_udev_device(m_device));
+    return {libinput_device_get_udev_device(m_device)};
 }
 
 }

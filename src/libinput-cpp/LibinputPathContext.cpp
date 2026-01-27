@@ -80,14 +80,14 @@ void LibinputPathContext::dispatch()
     libinput_dispatch(m_libinput);
 }
 
-std::unique_ptr<LibinputEvent> LibinputPathContext::getEvent()
+std::optional<LibinputEvent> LibinputPathContext::getEvent()
 {
     auto *event = libinput_get_event(m_libinput);
     if (!event) {
         return {};
     }
 
-    return std::make_unique<LibinputEvent>(event);
+    return {event};
 }
 
 int LibinputPathContext::openRestricted(const char *path, int flags, void *data)
