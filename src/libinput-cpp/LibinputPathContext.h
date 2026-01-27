@@ -42,9 +42,7 @@ public:
      * @see libinput_path_create_context
      */
     LibinputPathContext();
-    ~LibinputPathContext();
-
-    Q_DISABLE_COPY_MOVE(LibinputPathContext);
+    ~LibinputPathContext() override;
 
     /**
      * @see libinput_get_fd
@@ -64,7 +62,7 @@ public:
     /**
      * @see libinput_get_event
      */
-    std::unique_ptr<LibinputEvent> getEvent();
+    std::optional<LibinputEvent> getEvent();
 
 signals:
     void eventsAvailable();
@@ -72,6 +70,8 @@ signals:
 private:
     static int openRestricted(const char *path, int flags, void *data);
     static void closeRestricted(int fd, void *data);
+
+    Q_DISABLE_COPY_MOVE(LibinputPathContext);
 
     libinput *m_libinput;
     std::unique_ptr<QSocketNotifier> m_notifier;

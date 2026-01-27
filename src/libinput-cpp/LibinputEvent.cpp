@@ -30,8 +30,17 @@ LibinputEvent::LibinputEvent(libinput_event *event)
 {
 }
 
+LibinputEvent::LibinputEvent(LibinputEvent &&other)
+{
+    *this = std::move(other);
+}
+
 LibinputEvent::~LibinputEvent()
 {
+    if (!m_event) {
+        return;
+    }
+
     libinput_event_destroy(m_event);
 }
 
@@ -78,6 +87,12 @@ std::optional<LibinputTouchEvent> LibinputEvent::touchEvent() const
     }
 
     return LibinputTouchEvent(event);
+}
+
+LibinputEvent &LibinputEvent::operator=(LibinputEvent &&other)
+{
+    std::swap(m_event, other.m_event);
+    return *this;
 }
 
 }

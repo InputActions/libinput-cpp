@@ -35,8 +35,6 @@ public:
     LibinputDevice(libinput_device *device);
     ~LibinputDevice();
 
-    Q_DISABLE_COPY_MOVE(LibinputDevice);
-
     libinput_device *raw() { return m_device; }
 
     /**
@@ -56,7 +54,7 @@ public:
     /**
      * @see libinput_device_get_udev_device
      */
-    std::unique_ptr<UdevDevice> udevDevice() const;
+    UdevDevice udevDevice() const;
 
     /**
      * @param value true - LIBINPUT_CONFIG_TAP_ENABLED, false - LIBINPUT_CONFIG_TAP_DISABLED
@@ -65,6 +63,8 @@ public:
     void configTapSetEnabled(bool value);
 
 private:
+    Q_DISABLE_COPY_MOVE(LibinputDevice);
+
     libinput_device *m_device;
 };
 
