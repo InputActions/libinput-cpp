@@ -16,26 +16,25 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "LibinputTouchEvent.h"
+#include "KeyboardEvent.h"
 #include <libinput.h>
 
-namespace InputActions
+namespace InputActions::libinput
 {
 
-LibinputTouchEvent::LibinputTouchEvent(libinput_event_touch *event)
+KeyboardEvent::KeyboardEvent(libinput_event_keyboard *event)
     : m_event(event)
 {
 }
 
-int32_t LibinputTouchEvent::slot() const
+uint32_t KeyboardEvent::key() const
 {
-    return libinput_event_touch_get_slot(m_event);
+    return libinput_event_keyboard_get_key(m_event);
 }
 
-QPointF LibinputTouchEvent::position() const
+bool KeyboardEvent::state() const
 {
-    return {libinput_event_touch_get_x(m_event), libinput_event_touch_get_y(m_event)};
+    return libinput_event_keyboard_get_key_state(m_event) == LIBINPUT_KEY_STATE_PRESSED;
 }
-
 
 }

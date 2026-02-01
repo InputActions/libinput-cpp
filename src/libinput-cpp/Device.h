@@ -18,31 +18,54 @@
 
 #pragma once
 
-#include <cstdint>
+#include <QSizeF>
+#include <QString>
+#include <QtClassHelperMacros>
 
-struct libinput_event_keyboard;
+struct libinput_device;
 
-namespace InputActions
+namespace InputActions::libinput
 {
 
-class LibinputKeyboardEvent
+class UdevDevice;
+
+class Device
 {
 public:
-    LibinputKeyboardEvent(libinput_event_keyboard *event);
+    Device(libinput_device *device);
+    ~Device();
+
+    libinput_device *raw() { return m_device; }
 
     /**
-     * @see libinput_event_keyboard_get_key
+     * @see libinput_device_get_name
      */
-    uint32_t key() const;
+    QString name() const;
+    /**
+     * @see libinput_device_get_sysname
+     */
+    QString sysName() const;
 
     /**
-     * @return True if LIBINPUT_KEY_STATE_PRESSED, false otherwise.
-     * @see libinput_event_keyboard_get_key_state
+     * @see libinput_device_get_size
      */
-    bool state() const;
+    QSizeF size() const;
+
+    /**
+     * @see libinput_device_get_udev_device
+     */
+    UdevDevice udevDevice() const;
+
+    /**
+     * @param value true - LIBINPUT_CONFIG_TAP_ENABLED, false - LIBINPUT_CONFIG_TAP_DISABLED
+     * @see libinput_device_config_tap_set_enabled
+     */
+    void configTapSetEnabled(bool value);
 
 private:
-    libinput_event_keyboard *m_event;
+    Q_DISABLE_COPY_MOVE(Device);
+
+    libinput_device *m_device;
 };
 
 }

@@ -16,22 +16,22 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "LibinputPathContext.h"
-#include "LibinputDevice.h"
-#include "LibinputEvent.h"
+#include "PathContext.h"
+#include "Device.h"
+#include "Event.h"
 #include <fcntl.h>
 #include <libinput.h>
 #include <linux/input.h>
 #include <sys/ioctl.h>
 
-namespace InputActions
+namespace InputActions::libinput
 {
 
-LibinputPathContext::LibinputPathContext()
+PathContext::PathContext()
 {
     static libinput_interface interface{
-        .open_restricted = &LibinputPathContext::openRestricted,
-        .close_restricted = &LibinputPathContext::closeRestricted,
+        .open_restricted = &PathContext::openRestricted,
+        .close_restricted = &PathContext::closeRestricted,
     };
     m_libinput = libinput_path_create_context(&interface, this);
 
@@ -41,18 +41,18 @@ LibinputPathContext::LibinputPathContext()
     });
 }
 
-LibinputPathContext::~LibinputPathContext()
+PathContext::~PathContext()
 {
     m_devices.clear();
     libinput_unref(m_libinput);
 }
 
-int LibinputPathContext::fd() const
+int PathContext::fd() const
 {
     return libinput_get_fd(m_libinput);
 }
 
-LibinputDevice *LibinputPathContext::addDevice(const QString &path, bool grab)
+Device *PathContext::addDevice(const QString &path, bool grab)
 {
     m_grab = grab;
     auto *libinputDevice = libinput_path_add_device(m_libinput, path.toStdString().c_str());
@@ -61,13 +61,13 @@ LibinputDevice *LibinputPathContext::addDevice(const QString &path, bool grab)
     }
     libinput_device_ref(libinputDevice);
 
-    auto device = std::make_unique<LibinputDevice>(libinputDevice);
+    auto device = std::make_unique<Device>(libinputDevice);
     auto *devicePtr = device.get();
     m_devices.push_back(std::move(device));
     return devicePtr;
 }
 
-void LibinputPathContext::removeDevice(LibinputDevice *device)
+void PathContext::removeDevice(Device *device)
 {
     libinput_path_remove_device(device->raw());
     std::erase_if(m_devices, [device](auto &existingDevice) {
@@ -75,12 +75,12 @@ void LibinputPathContext::removeDevice(LibinputDevice *device)
     });
 }
 
-void LibinputPathContext::dispatch()
+void PathContext::dispatch()
 {
     libinput_dispatch(m_libinput);
 }
 
-std::optional<LibinputEvent> LibinputPathContext::getEvent()
+std::optional<Event> PathContext::getEvent()
 {
     auto *event = libinput_get_event(m_libinput);
     if (!event) {
@@ -90,9 +90,9 @@ std::optional<LibinputEvent> LibinputPathContext::getEvent()
     return {event};
 }
 
-int LibinputPathContext::openRestricted(const char *path, int flags, void *data)
+int PathContext::openRestricted(const char *path, int flags, void *data)
 {
-    const auto *self = static_cast<LibinputPathContext *>(data);
+    const auto *self = static_cast<PathContext *>(data);
     const auto fd = open(path, flags);
     if (fd < 0) {
         return -errno;
@@ -104,7 +104,7 @@ int LibinputPathContext::openRestricted(const char *path, int flags, void *data)
     return fd;
 }
 
-void LibinputPathContext::closeRestricted(int fd, void *data)
+void PathContext::closeRestricted(int fd, void *data)
 {
     close(fd);
 }

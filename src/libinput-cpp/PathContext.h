@@ -27,13 +27,13 @@
 struct libinput;
 struct libinput_device;
 
-namespace InputActions
+namespace InputActions::libinput
 {
 
-class LibinputDevice;
-class LibinputEvent;
+class Device;
+class Event;
 
-class LibinputPathContext : public QObject
+class PathContext : public QObject
 {
     Q_OBJECT
 
@@ -41,8 +41,8 @@ public:
     /**
      * @see libinput_path_create_context
      */
-    LibinputPathContext();
-    ~LibinputPathContext() override;
+    PathContext();
+    ~PathContext() override;
 
     /**
      * @see libinput_get_fd
@@ -52,8 +52,8 @@ public:
     /**
      * @see libinput_path_add_device
      */
-    LibinputDevice *addDevice(const QString &path, bool grab = false);
-    void removeDevice(LibinputDevice *device);
+    Device *addDevice(const QString &path, bool grab = false);
+    void removeDevice(Device *device);
 
     /**
      * @see libinput_dispatch
@@ -62,7 +62,7 @@ public:
     /**
      * @see libinput_get_event
      */
-    std::optional<LibinputEvent> getEvent();
+    std::optional<Event> getEvent();
 
 signals:
     void eventsAvailable();
@@ -71,12 +71,12 @@ private:
     static int openRestricted(const char *path, int flags, void *data);
     static void closeRestricted(int fd, void *data);
 
-    Q_DISABLE_COPY_MOVE(LibinputPathContext);
+    Q_DISABLE_COPY_MOVE(PathContext);
 
-    libinput *m_libinput;
+    struct libinput *m_libinput;
     std::unique_ptr<QSocketNotifier> m_notifier;
     bool m_grab{};
-    std::vector<std::unique_ptr<LibinputDevice>> m_devices;
+    std::vector<std::unique_ptr<Device>> m_devices;
 };
 
 }

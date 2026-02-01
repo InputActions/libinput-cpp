@@ -16,34 +16,26 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "TouchEvent.h"
+#include <libinput.h>
 
-#include <cstdint>
-#include <QPointF>
-
-struct libinput_event_touch;
-
-namespace InputActions
+namespace InputActions::libinput
 {
 
-class LibinputTouchEvent
+TouchEvent::TouchEvent(libinput_event_touch *event)
+    : m_event(event)
 {
-public:
-    LibinputTouchEvent(libinput_event_touch *event);
+}
 
-    /**
-     * @see libinput_event_touch_get_slot
-     */
-    int32_t slot() const;
+int32_t TouchEvent::slot() const
+{
+    return libinput_event_touch_get_slot(m_event);
+}
 
-    /**
-     * @see libinput_event_touch_get_x
-     * @see libinput_event_touch_get_y
-     */
-    QPointF position() const;
+QPointF TouchEvent::position() const
+{
+    return {libinput_event_touch_get_x(m_event), libinput_event_touch_get_y(m_event)};
+}
 
-private:
-    libinput_event_touch *m_event;
-};
 
 }

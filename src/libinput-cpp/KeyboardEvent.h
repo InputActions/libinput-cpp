@@ -16,25 +16,33 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "LibinputKeyboardEvent.h"
-#include <libinput.h>
+#pragma once
 
-namespace InputActions
+#include <cstdint>
+
+struct libinput_event_keyboard;
+
+namespace InputActions::libinput
 {
 
-LibinputKeyboardEvent::LibinputKeyboardEvent(libinput_event_keyboard *event)
-    : m_event(event)
+class KeyboardEvent
 {
-}
+public:
+    KeyboardEvent(libinput_event_keyboard *event);
 
-uint32_t LibinputKeyboardEvent::key() const
-{
-    return libinput_event_keyboard_get_key(m_event);
-}
+    /**
+     * @see libinput_event_keyboard_get_key
+     */
+    uint32_t key() const;
 
-bool LibinputKeyboardEvent::state() const
-{
-    return libinput_event_keyboard_get_key_state(m_event) == LIBINPUT_KEY_STATE_PRESSED;
-}
+    /**
+     * @return True if LIBINPUT_KEY_STATE_PRESSED, false otherwise.
+     * @see libinput_event_keyboard_get_key_state
+     */
+    bool state() const;
+
+private:
+    libinput_event_keyboard *m_event;
+};
 
 }

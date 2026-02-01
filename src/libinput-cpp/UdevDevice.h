@@ -22,7 +22,7 @@
 
 struct udev_device;
 
-namespace InputActions
+namespace InputActions::libinput
 {
 
 class UdevDevice

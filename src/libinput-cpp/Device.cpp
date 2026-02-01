@@ -16,39 +16,39 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "LibinputDevice.h"
+#include "Device.h"
 #include "UdevDevice.h"
 #include <libinput.h>
 
-namespace InputActions
+namespace InputActions::libinput
 {
 
-LibinputDevice::LibinputDevice(libinput_device *device)
+Device::Device(libinput_device *device)
     : m_device(device)
 {
 }
 
-LibinputDevice::~LibinputDevice()
+Device::~Device()
 {
     libinput_device_unref(m_device);
 }
 
-void LibinputDevice::configTapSetEnabled(bool value)
+void Device::configTapSetEnabled(bool value)
 {
     libinput_device_config_tap_set_enabled(m_device, value ? LIBINPUT_CONFIG_TAP_ENABLED : LIBINPUT_CONFIG_TAP_DISABLED);
 }
 
-QString LibinputDevice::name() const
+QString Device::name() const
 {
     return libinput_device_get_name(m_device);
 }
 
-QString LibinputDevice::sysName() const
+QString Device::sysName() const
 {
     return libinput_device_get_sysname(m_device);
 }
 
-QSizeF LibinputDevice::size() const
+QSizeF Device::size() const
 {
     double width;
     double height;
@@ -59,7 +59,7 @@ QSizeF LibinputDevice::size() const
     return {width, height};
 }
 
-UdevDevice LibinputDevice::udevDevice() const
+UdevDevice Device::udevDevice() const
 {
     return {libinput_device_get_udev_device(m_device)};
 }

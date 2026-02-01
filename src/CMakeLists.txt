@@ -3,13 +3,13 @@ pkg_search_module(LIBINPUT REQUIRED libinput)
 pkg_search_module(LIBUDEV REQUIRED libudev)
 
 add_library(libinput-cpp STATIC
-    libinput-cpp/LibinputDevice.cpp
-    libinput-cpp/LibinputEvent.cpp
-    libinput-cpp/LibinputGestureEvent.cpp
-    libinput-cpp/LibinputKeyboardEvent.cpp
-    libinput-cpp/LibinputPathContext.cpp
-    libinput-cpp/LibinputPointerEvent.cpp
-    libinput-cpp/LibinputTouchEvent.cpp
+    libinput-cpp/Device.cpp
+    libinput-cpp/Event.cpp
+    libinput-cpp/GestureEvent.cpp
+    libinput-cpp/KeyboardEvent.cpp
+    libinput-cpp/PathContext.cpp
+    libinput-cpp/PointerEvent.cpp
+    libinput-cpp/TouchEvent.cpp
     libinput-cpp/UdevDevice.cpp
 )
 target_link_libraries(libinput-cpp  PUBLIC

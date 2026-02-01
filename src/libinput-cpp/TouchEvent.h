@@ -16,36 +16,34 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "UdevDevice.h"
-#include <libudev.h>
-#include <utility>
+#pragma once
+
+#include <cstdint>
+#include <QPointF>
+
+struct libinput_event_touch;
 
 namespace InputActions::libinput
 {
 
-UdevDevice::UdevDevice(udev_device *device)
-    : m_device(device)
+class TouchEvent
 {
-}
+public:
+    TouchEvent(libinput_event_touch *event);
 
-UdevDevice::~UdevDevice()
-{
-    if (!m_device) {
-        return;
-    }
+    /**
+     * @see libinput_event_touch_get_slot
+     */
+    int32_t slot() const;
 
-    udev_device_unref(m_device);
-}
+    /**
+     * @see libinput_event_touch_get_x
+     * @see libinput_event_touch_get_y
+     */
+    QPointF position() const;
 
-const char *UdevDevice::propertyValue(const char *key) const
-{
-    return udev_device_get_property_value(m_device, key);
-}
-
-UdevDevice &UdevDevice::operator=(UdevDevice &&other)
-{
-    std::swap(m_device, other.m_device);
-    return *this;
-}
+private:
+    libinput_event_touch *m_event;
+};
 
 }

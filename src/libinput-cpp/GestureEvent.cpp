@@ -16,43 +16,43 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "LibinputGestureEvent.h"
+#include "GestureEvent.h"
 #include <libinput.h>
 
-namespace InputActions
+namespace InputActions::libinput
 {
 
-LibinputGestureEvent::LibinputGestureEvent(libinput_event_gesture *event)
+GestureEvent::GestureEvent(libinput_event_gesture *event)
     : m_event(event)
 {
 }
 
-int LibinputGestureEvent::fingerCount() const
+int GestureEvent::fingerCount() const
 {
     return libinput_event_gesture_get_finger_count(m_event);
 }
 
-bool LibinputGestureEvent::cancelled() const
+bool GestureEvent::cancelled() const
 {
     return libinput_event_gesture_get_cancelled(m_event) == 1;
 }
 
-qreal LibinputGestureEvent::angleDelta() const
+qreal GestureEvent::angleDelta() const
 {
     return libinput_event_gesture_get_angle_delta(m_event);
 }
 
-qreal LibinputGestureEvent::scale() const
+qreal GestureEvent::scale() const
 {
     return libinput_event_gesture_get_scale(m_event);
 }
 
-QPointF LibinputGestureEvent::delta() const
+QPointF GestureEvent::delta() const
 {
     return {libinput_event_gesture_get_dx(m_event), libinput_event_gesture_get_dy(m_event)};
 }
 
-QPointF LibinputGestureEvent::deltaUnaccelerated() const
+QPointF GestureEvent::deltaUnaccelerated() const
 {
     return {libinput_event_gesture_get_dx_unaccelerated(m_event), libinput_event_gesture_get_dy_unaccelerated(m_event)};
 }

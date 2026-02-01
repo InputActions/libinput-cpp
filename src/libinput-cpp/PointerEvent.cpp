@@ -16,42 +16,42 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "LibinputPointerEvent.h"
+#include "PointerEvent.h"
 
-namespace InputActions
+namespace InputActions::libinput
 {
 
-LibinputPointerEvent::LibinputPointerEvent(libinput_event_pointer *event)
+PointerEvent::PointerEvent(libinput_event_pointer *event)
     : m_event(event)
 {
 }
 
-bool LibinputPointerEvent::hasAxis(libinput_pointer_axis axis) const
+bool PointerEvent::hasAxis(libinput_pointer_axis axis) const
 {
     return libinput_event_pointer_has_axis(m_event, axis) != 0;
 }
 
-qreal LibinputPointerEvent::axisValue(libinput_pointer_axis axis) const
+qreal PointerEvent::axisValue(libinput_pointer_axis axis) const
 {
     return libinput_event_pointer_get_axis_value(m_event, axis);
 }
 
-uint32_t LibinputPointerEvent::button() const
+uint32_t PointerEvent::button() const
 {
     return libinput_event_pointer_get_button(m_event);
 }
 
-bool LibinputPointerEvent::state() const
+bool PointerEvent::state() const
 {
     return libinput_event_pointer_get_button_state(m_event) == LIBINPUT_BUTTON_STATE_PRESSED;
 }
 
-QPointF LibinputPointerEvent::delta() const
+QPointF PointerEvent::delta() const
 {
     return {libinput_event_pointer_get_dx(m_event), libinput_event_pointer_get_dy(m_event)};
 }
 
-QPointF LibinputPointerEvent::deltaUnaccelerated() const
+QPointF PointerEvent::deltaUnaccelerated() const
 {
     return {libinput_event_pointer_get_dx_unaccelerated(m_event), libinput_event_pointer_get_dy_unaccelerated(m_event)};
 }

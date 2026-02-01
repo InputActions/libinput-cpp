@@ -19,48 +19,49 @@
 #pragma once
 
 #include <QPointF>
+#include <libinput.h>
 
-struct libinput_event_gesture;
-
-namespace InputActions
+namespace InputActions::libinput
 {
 
-class LibinputGestureEvent
+class PointerEvent
 {
 public:
-    LibinputGestureEvent(libinput_event_gesture *event);
+    PointerEvent(libinput_event_pointer *event);
 
     /**
-     * @see libinput_event_gesture_get_finger_count
+     * @return True if the specified axis exists, false otherwise.
+     * @see libinput_event_pointer_has_axis
      */
-    int fingerCount() const;
+    bool hasAxis(libinput_pointer_axis axis) const;
     /**
-     * @see libinput_event_gesture_get_cancelled
+     * @see libinput_event_pointer_get_axis_value
      */
-    bool cancelled() const;
+    qreal axisValue(libinput_pointer_axis axis) const;
 
     /**
-     * @see libinput_event_gesture_get_angle_delta
+     * @see libinput_event_pointer_get_button
      */
-    qreal angleDelta() const;
+    uint32_t button() const;
     /**
-     * @see libinput_event_gesture_get_scale
+     * @return True if LIBINPUT_BUTTON_STATE_PRESSED, false otherwise.
+     * @see libinput_event_pointer_get_button_state
      */
-    qreal scale() const;
+    bool state() const;
 
     /**
-     * @see libinput_event_gesture_get_dx
-     * @see libinput_event_gesture_get_dy
+     * @see libinput_event_pointer_get_dx
+     * @see libinput_event_pointer_get_dy
      */
     QPointF delta() const;
     /**
-     * @see libinput_event_gesture_get_dx_unaccelerated
-     * @see libinput_event_gesture_get_dy_unaccelerated
+     * @see libinput_event_pointer_get_dx_unaccelerated
+     * @see libinput_event_pointer_get_dy_unaccelerated
      */
     QPointF deltaUnaccelerated() const;
 
 private:
-    libinput_event_gesture *m_event;
+    libinput_event_pointer *m_event;
 };
 
 }

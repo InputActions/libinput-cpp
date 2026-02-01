@@ -22,20 +22,20 @@
 #include <libinput.h>
 #include <optional>
 
-namespace InputActions
+namespace InputActions::libinput
 {
 
-class LibinputGestureEvent;
-class LibinputKeyboardEvent;
-class LibinputPointerEvent;
-class LibinputTouchEvent;
+class GestureEvent;
+class KeyboardEvent;
+class PointerEvent;
+class TouchEvent;
 
-class LibinputEvent
+class Event
 {
 public:
-    LibinputEvent(libinput_event *event);
-    LibinputEvent(LibinputEvent &&);
-    ~LibinputEvent();
+    Event(libinput_event *event);
+    Event(Event &&);
+    ~Event();
 
     libinput_event_type type() const;
 
@@ -43,27 +43,27 @@ public:
      * @return The gesture event or std::nullopt if this event is not a gesture event. The returned object becomes invalid when its parent is deleted.
      * @see libinput_event_get_gesture_event
      */
-    std::optional<LibinputGestureEvent> gestureEvent() const;
+    std::optional<GestureEvent> gestureEvent() const;
     /**
      * @return The keyboard event or std::nullopt if this event is not a keyboard event. The returned object becomes invalid when its parent is deleted.
      * @see libinput_event_get_keyboard_event
      */
-    std::optional<LibinputKeyboardEvent> keyboardEvent() const;
+    std::optional<KeyboardEvent> keyboardEvent() const;
     /**
      * @return The pointer event or std::nullopt if this event is not a pointer event. The returned object becomes invalid when its parent is deleted.
      * @see libinput_event_get_pointer_event
      */
-    std::optional<LibinputPointerEvent> pointerEvent() const;
+    std::optional<PointerEvent> pointerEvent() const;
     /**
      * @return The touch event or std::nullopt if this event is not a touch event. The returned object becomes invalid when its parent is deleted.
      * @see libinput_event_get_touch_event
      */
-    std::optional<LibinputTouchEvent> touchEvent() const;
+    std::optional<TouchEvent> touchEvent() const;
 
-    LibinputEvent &operator=(LibinputEvent &&);
+    Event &operator=(Event &&);
 
 private:
-    Q_DISABLE_COPY(LibinputEvent);
+    Q_DISABLE_COPY(Event);
 
     libinput_event *m_event{};
 };

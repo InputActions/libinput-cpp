@@ -18,54 +18,49 @@
 
 #pragma once
 
-#include <QSizeF>
-#include <QString>
-#include <QtClassHelperMacros>
+#include <QPointF>
 
-struct libinput_device;
+struct libinput_event_gesture;
 
-namespace InputActions
+namespace InputActions::libinput
 {
 
-class UdevDevice;
-
-class LibinputDevice
+class GestureEvent
 {
 public:
-    LibinputDevice(libinput_device *device);
-    ~LibinputDevice();
-
-    libinput_device *raw() { return m_device; }
+    GestureEvent(libinput_event_gesture *event);
 
     /**
-     * @see libinput_device_get_name
+     * @see libinput_event_gesture_get_finger_count
      */
-    QString name() const;
+    int fingerCount() const;
     /**
-     * @see libinput_device_get_sysname
+     * @see libinput_event_gesture_get_cancelled
      */
-    QString sysName() const;
+    bool cancelled() const;
 
     /**
-     * @see libinput_device_get_size
+     * @see libinput_event_gesture_get_angle_delta
      */
-    QSizeF size() const;
+    qreal angleDelta() const;
+    /**
+     * @see libinput_event_gesture_get_scale
+     */
+    qreal scale() const;
 
     /**
-     * @see libinput_device_get_udev_device
+     * @see libinput_event_gesture_get_dx
+     * @see libinput_event_gesture_get_dy
      */
-    UdevDevice udevDevice() const;
-
+    QPointF delta() const;
     /**
-     * @param value true - LIBINPUT_CONFIG_TAP_ENABLED, false - LIBINPUT_CONFIG_TAP_DISABLED
-     * @see libinput_device_config_tap_set_enabled
+     * @see libinput_event_gesture_get_dx_unaccelerated
+     * @see libinput_event_gesture_get_dy_unaccelerated
      */
-    void configTapSetEnabled(bool value);
+    QPointF deltaUnaccelerated() const;
 
 private:
-    Q_DISABLE_COPY_MOVE(LibinputDevice);
-
-    libinput_device *m_device;
+    libinput_event_gesture *m_event;
 };
 
 }

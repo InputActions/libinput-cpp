@@ -16,26 +16,26 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "LibinputEvent.h"
-#include "LibinputGestureEvent.h"
-#include "LibinputKeyboardEvent.h"
-#include "LibinputPointerEvent.h"
-#include "LibinputTouchEvent.h"
+#include "Event.h"
+#include "GestureEvent.h"
+#include "KeyboardEvent.h"
+#include "PointerEvent.h"
+#include "TouchEvent.h"
 
-namespace InputActions
+namespace InputActions::libinput
 {
 
-LibinputEvent::LibinputEvent(libinput_event *event)
+Event::Event(libinput_event *event)
     : m_event(event)
 {
 }
 
-LibinputEvent::LibinputEvent(LibinputEvent &&other)
+Event::Event(Event &&other)
 {
     *this = std::move(other);
 }
 
-LibinputEvent::~LibinputEvent()
+Event::~Event()
 {
     if (!m_event) {
         return;
@@ -44,52 +44,52 @@ LibinputEvent::~LibinputEvent()
     libinput_event_destroy(m_event);
 }
 
-libinput_event_type LibinputEvent::type() const
+libinput_event_type Event::type() const
 {
     return libinput_event_get_type(m_event);
 }
 
-std::optional<LibinputGestureEvent> LibinputEvent::gestureEvent() const
+std::optional<GestureEvent> Event::gestureEvent() const
 {
     auto *event = libinput_event_get_gesture_event(m_event);
     if (!event) {
         return {};
     }
 
-    return LibinputGestureEvent(event);
+    return GestureEvent(event);
 }
 
-std::optional<LibinputKeyboardEvent> LibinputEvent::keyboardEvent() const
+std::optional<KeyboardEvent> Event::keyboardEvent() const
 {
     auto *event = libinput_event_get_keyboard_event(m_event);
     if (!event) {
         return {};
     }
 
-    return LibinputKeyboardEvent(event);
+    return KeyboardEvent(event);
 }
 
-std::optional<LibinputPointerEvent> LibinputEvent::pointerEvent() const
+std::optional<PointerEvent> Event::pointerEvent() const
 {
     auto *event = libinput_event_get_pointer_event(m_event);
     if (!event) {
         return {};
     }
 
-    return LibinputPointerEvent(event);
+    return PointerEvent(event);
 }
 
-std::optional<LibinputTouchEvent> LibinputEvent::touchEvent() const
+std::optional<TouchEvent> Event::touchEvent() const
 {
     auto *event = libinput_event_get_touch_event(m_event);
     if (!event) {
         return {};
     }
 
-    return LibinputTouchEvent(event);
+    return TouchEvent(event);
 }
 
-LibinputEvent &LibinputEvent::operator=(LibinputEvent &&other)
+Event &Event::operator=(Event &&other)
 {
     std::swap(m_event, other.m_event);
     return *this;
