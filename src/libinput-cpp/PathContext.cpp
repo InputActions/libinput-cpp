@@ -23,6 +23,7 @@
 #include <libinput.h>
 #include <linux/input.h>
 #include <sys/ioctl.h>
+#include <unistd.h>
 
 namespace InputActions::libinput
 {
