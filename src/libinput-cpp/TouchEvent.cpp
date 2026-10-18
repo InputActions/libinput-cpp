@@ -1,5 +1,5 @@
 /*
-    libevdev-cpp - Minimal C++ libinput wrapper for InputActions
+    libinput-cpp - C++ libinput wrapper for InputActions
     Copyright (C) 2026 Marcin Woźniak
 
     This program is free software: you can redistribute it and/or modify
