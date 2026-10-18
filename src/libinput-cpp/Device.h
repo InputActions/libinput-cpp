@@ -52,11 +52,6 @@ public:
     QSizeF size() const;
 
     /**
-     * @see libinput_device_get_udev_device
-     */
-    UdevDevice udevDevice() const;
-
-    /**
      * @param value true - LIBINPUT_CONFIG_TAP_ENABLED, false - LIBINPUT_CONFIG_TAP_DISABLED
      * @see libinput_device_config_tap_set_enabled
      */

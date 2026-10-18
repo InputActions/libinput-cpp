@@ -17,7 +17,6 @@
 */
 
 #include "Device.h"
-#include "UdevDevice.h"
 #include <libinput.h>
 
 namespace InputActions::libinput
@@ -57,11 +56,6 @@ QSizeF Device::size() const
     }
 
     return {width, height};
-}
-
-UdevDevice Device::udevDevice() const
-{
-    return {libinput_device_get_udev_device(m_device)};
 }
 
 }
