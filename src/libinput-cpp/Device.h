@@ -63,7 +63,7 @@ public:
     void configTapSetEnabled(bool value);
 
 private:
-    Q_DISABLE_COPY_MOVE(Device);
+    Q_DISABLE_COPY_MOVE(Device)
 
     libinput_device *m_device;
 };

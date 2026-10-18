@@ -37,5 +37,4 @@ QPointF TouchEvent::position() const
     return {libinput_event_touch_get_x(m_event), libinput_event_touch_get_y(m_event)};
 }
 
-
 }
