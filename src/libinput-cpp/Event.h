@@ -63,7 +63,7 @@ public:
     Event &operator=(Event &&);
 
 private:
-    Q_DISABLE_COPY(Event);
+    Q_DISABLE_COPY(Event)
 
     libinput_event *m_event{};
 };

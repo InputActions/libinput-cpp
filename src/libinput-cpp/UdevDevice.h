@@ -37,7 +37,7 @@ public:
     UdevDevice &operator=(UdevDevice &&);
 
 private:
-    Q_DISABLE_COPY(UdevDevice);
+    Q_DISABLE_COPY(UdevDevice)
 
     udev_device *m_device{};
 };

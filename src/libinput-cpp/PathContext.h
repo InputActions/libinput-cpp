@@ -71,7 +71,7 @@ private:
     static int openRestricted(const char *path, int flags, void *data);
     static void closeRestricted(int fd, void *data);
 
-    Q_DISABLE_COPY_MOVE(PathContext);
+    Q_DISABLE_COPY_MOVE(PathContext)
 
     struct libinput *m_libinput;
     std::unique_ptr<QSocketNotifier> m_notifier;

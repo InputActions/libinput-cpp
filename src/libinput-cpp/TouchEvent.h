@@ -18,8 +18,8 @@
 
 #pragma once
 
-#include <cstdint>
 #include <QPointF>
+#include <cstdint>
 
 struct libinput_event_touch;
 
